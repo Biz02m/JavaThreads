@@ -11,7 +11,7 @@ public class Main {
     public static Scanner scan = new Scanner(System.in);
     public static void main(String[] args){
         String op;
-        Integer tmp;
+        int tmp;
         workers = new LinkedList<>();
         resource = new Resource();
         outcome = new Outcome();
@@ -20,28 +20,25 @@ public class Main {
         while(true){
             System.out.println("type in : new | quit | input | random entries | file");
             op = scan.nextLine();
-            switch (op){
-                case "new":
+            switch (op) {
+                case "new" -> {
                     System.out.println("Type in a number of threads to be created:");
                     tmp = scan.nextInt();
                     startNewThreads(tmp);
-                    break;
-                case "quit":
-                    quit();
-                    break;
-                case "input":
+                }
+                case "quit" -> quit();
+                case "input" -> {
                     System.out.println("Type in numbers to be processed:");
                     inputs();
-                    break;
-                case "random entries":
+                }
+                case "random entries" -> {
                     System.out.println("Type in: number of inputs | origin | bounds");
                     int noOfInpts = scan.nextInt();
                     int origin = scan.nextInt();
                     int bounds = scan.nextInt();
-                    //randomInputs(noOfInpts,origin,bounds);
-                    break;
-                case "file":
-                    readFromFile();
+                    randomInputs(noOfInpts, origin, bounds);
+                }
+                case "file" -> readFromFile();
             }
         }
     }
@@ -52,7 +49,7 @@ public class Main {
             File myObj = new File(name);
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
-                Long data = Long.valueOf(Integer.parseInt(myReader.nextLine()));
+                Long data = (long) Integer.parseInt(myReader.nextLine());
                 resource.put(data);
             }
             myReader.close();
@@ -64,13 +61,13 @@ public class Main {
 
     public static void inputs(){
         String op;
-        Long tmp;
+        long tmp;
         while(true){
             op = scan.nextLine();
             if(op.equals("q"))
                 break;
             try {
-                tmp = Long.valueOf(Integer.parseInt(op));
+                tmp = (long) Integer.parseInt(op);
             }catch (NumberFormatException ex){
                 continue;
             }
@@ -90,6 +87,7 @@ public class Main {
             }
         }
         resource.printMe();
+        resource.getNumbers().clear();
         outcome.printMe();
         outcome.printToFile();
         return 0;
@@ -100,6 +98,13 @@ public class Main {
             Thread thread = new Thread(new Worker(resource,outcome));
             thread.start();
             workers.add(thread);
+        }
+    }
+
+    public static void randomInputs(int numberOfInputs, int origin, int bound){
+        Random rand = new Random();
+        for(int i = 0; i<numberOfInputs;i++){
+            resource.put((long) rand.nextInt(origin, bound));
         }
     }
 }

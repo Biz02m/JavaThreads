@@ -7,6 +7,10 @@ public class Resource {
         this.Numbers = new LinkedList<Long>();
     }
 
+    public LinkedList<Long> getNumbers(){
+        return this.Numbers;
+    }
+
     public synchronized Long take() throws InterruptedException{
         long currentThreadId = Thread.currentThread().getId();
         while(Numbers.isEmpty()){
@@ -14,8 +18,8 @@ public class Resource {
             wait();
         }
         Long retVal = Numbers.getLast();
-        System.out.println(currentThreadId + ": pobralem: "+ retVal);
         Numbers.removeLast();
+        System.out.println(currentThreadId + ": pobralem: "+ retVal);
         return retVal;
     }
 

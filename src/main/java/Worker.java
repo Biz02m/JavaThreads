@@ -2,60 +2,68 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Worker implements Runnable{
-    private Resource resource;
-    private Outcome outcome;
+    private final Resource resource;
+    private final Outcome outcome;
+    public boolean isWorking;
 
     public Worker(Resource resource, Outcome outcome){
         this.resource = resource;
         this.outcome = outcome;
+        isWorking = true;
     }
 
-    public static List<Long> getDzielniki(Long number) throws InterruptedException{
-        List<Long> dzielniki = new ArrayList<>();
+    public List<Long> getDivisors(Long number) throws InterruptedException{
+        List<Long> divisors = new ArrayList<>();
 
         if(number < 1){
-            dzielniki.add(0l);
-            return dzielniki;
+            divisors.add(0L);
+            return divisors;
         }
 
-        for (Long i = 1l; i <= number; i++) {
+        for (Long i = 1L; i <= number; i++) {
             if (number % i == 0) {
-                dzielniki.add(i);
+                divisors.add(i);
             }
-//            try {
-//                Thread.sleep(0);
-//            } catch (InterruptedException e) {
-//                throw new InterruptedException();
-//            }
+            try {
+                Thread.sleep(1000*5);
+            } catch (InterruptedException e) {
+                isWorking = false;
+            }
         }
 
-        return dzielniki;
+
+
+        return divisors;
     }
 
     @Override
     public void run(){
         long currentThreadId = Thread.currentThread().getId();
         System.out.println("Thread with ID has started: " + currentThreadId);
-        Long value;
-        boolean isP;
-        List<Long> dzielniki;
-        while(true){
+        Long value = -1L;
+        List<Long> divisors = new ArrayList<>();
+
+        while(isWorking){
             try{
                 value = resource.take();
             }
             catch (InterruptedException ex){
-                break;
-            }
-            try{
-                dzielniki = getDzielniki(value);
-            }catch (InterruptedException ex){
-                System.out.println("pobralem i zwracam wartosc do listy: " + value);
-                resource.put(value);
-                break;
+                isWorking = false;
             }
 
-            System.out.println();
-            outcome.put(value,dzielniki);
+            if(value >= 0) {
+                try {
+                    divisors = getDivisors(value);
+                    if(!isWorking){
+                        throw new InterruptedException();
+                    }
+                }
+                catch (InterruptedException e){
+                    isWorking = false;
+                }
+                outcome.put(value, divisors);
+            }
+            value = -1L;
         }
     }
 

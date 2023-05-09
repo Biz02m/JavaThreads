@@ -33,7 +33,7 @@ public class Outcome {
     public void printToFile(){
         //TODO - fix the printer function so that it appends to file.
         try {
-            FileWriter myWriter = new FileWriter("divisors.txt");
+            FileWriter myWriter = new FileWriter("divisors.txt", true);
 
             for (Out o: this.outcomes
                  ) {
