@@ -2,8 +2,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
 
 public class Outcome {
@@ -16,6 +14,7 @@ public class Outcome {
         }
 
     }
+
     private List<Out> outcomes;
 
     public Outcome(){
@@ -26,19 +25,19 @@ public class Outcome {
         System.out.println("In the outcome is: ");
         for (Out o : this.outcomes
              ) {
-            System.out.println("Number: "+ o.liczba + " ma dzielniki: " + o.dzielniki);
+            System.out.println("Number: "+ o.liczba + " can be divided by: " + o.dzielniki);
         }
-        //System.out.println("Number: " + value + (bol ? " is prime number" : " is not a prime number"));
 
     }
 
     public void printToFile(){
+        //TODO - fix the printer function so that it appends to file.
         try {
-            FileWriter myWriter = new FileWriter("dzielniki.txt");
+            FileWriter myWriter = new FileWriter("divisors.txt");
 
             for (Out o: this.outcomes
                  ) {
-                myWriter.write("Liczba: "+ o.liczba + " ma dzielniki: " + o.dzielniki + "\n");
+                myWriter.write("Number: "+ o.liczba + " can be divided by: " + o.dzielniki + "\n");
             }
 
             myWriter.close();
@@ -53,7 +52,7 @@ public class Outcome {
         Out out = new Out(liczba);
         out.dzielniki = dzielniki;
         long currentThreadId = Thread.currentThread().getId();
-        System.out.println(currentThreadId + ": dodaje wynik: " + liczba);
+        System.out.println(currentThreadId + ": adds a result for: " + liczba);
         this.outcomes.add(out);
     }
 }

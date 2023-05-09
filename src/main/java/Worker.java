@@ -22,11 +22,11 @@ public class Worker implements Runnable{
             if (number % i == 0) {
                 dzielniki.add(i);
             }
-            try {
-                Thread.sleep(0);
-            } catch (InterruptedException e) {
-                throw new InterruptedException();
-            }
+//            try {
+//                Thread.sleep(0);
+//            } catch (InterruptedException e) {
+//                throw new InterruptedException();
+//            }
         }
 
         return dzielniki;
@@ -48,7 +48,6 @@ public class Worker implements Runnable{
             }
             try{
                 dzielniki = getDzielniki(value);
-                //isP = isPrime(value);
             }catch (InterruptedException ex){
                 System.out.println("pobralem i zwracam wartosc do listy: " + value);
                 resource.put(value);
