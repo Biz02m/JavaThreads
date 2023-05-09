@@ -8,11 +8,12 @@ public class Resource {
     }
 
     public synchronized Integer take() throws InterruptedException{
+        long currentThreadId = Thread.currentThread().getId();
         while(Numbers.isEmpty()){
-            System.out.println("lista jest pusta, czekam na inputy");
+            System.out.println(currentThreadId + ": lista jest pusta, czekam na inputy");
             wait();
         }
-        System.out.println("znaleziono input, odpalamy");
+        System.out.println(currentThreadId + ": znaleziono input, odpalamy");
         int retVal = Numbers.getLast();
         Numbers.removeLast();
         return retVal;

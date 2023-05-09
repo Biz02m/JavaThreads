@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
@@ -37,7 +39,26 @@ public class Main {
                     int origin = scan.nextInt();
                     int bounds = scan.nextInt();
                     randomInputs(noOfInpts,origin,bounds);
+                    break;
+                case "file":
+                    readFromFile();
             }
+        }
+    }
+
+    public static void readFromFile(){
+        String name = "liczby.txt";
+        try {
+            File myObj = new File(name);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                int data = Integer.parseInt(myReader.nextLine());
+                resource.put(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
 
