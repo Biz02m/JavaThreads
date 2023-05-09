@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -5,20 +8,13 @@ import java.util.List;
 
 public class Outcome {
     public class Out{
-        private int liczba;
-        private List<Integer> dzielniki;
+        private Long liczba;
+        private List<Long> dzielniki;
 
-        public Out(int liczba){
+        public Out(Long liczba){
             this.liczba = liczba;
         }
 
-        public int getLiczba() {
-            return liczba;
-        }
-
-        public void setLiczba(int liczba){
-            this.liczba = liczba;
-        }
     }
     private List<Out> outcomes;
 
@@ -36,9 +32,28 @@ public class Outcome {
 
     }
 
-    public synchronized void put(Integer liczba, List<Integer> dzielniki){
+    public void printToFile(){
+        try {
+            FileWriter myWriter = new FileWriter("dzielniki.txt");
+
+            for (Out o: this.outcomes
+                 ) {
+                myWriter.write("Liczba: "+ o.liczba + " ma dzielniki: " + o.dzielniki + "\n");
+            }
+
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void put(Long liczba, List<Long> dzielniki){
         Out out = new Out(liczba);
         out.dzielniki = dzielniki;
+        long currentThreadId = Thread.currentThread().getId();
+        System.out.println(currentThreadId + ": dodaje wynik: " + liczba);
         this.outcomes.add(out);
     }
 }

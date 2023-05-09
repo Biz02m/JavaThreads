@@ -18,7 +18,7 @@ public class Main {
 
 
         while(true){
-            System.out.println("type in : new | quit | input | random entries");
+            System.out.println("type in : new | quit | input | random entries | file");
             op = scan.nextLine();
             switch (op){
                 case "new":
@@ -38,7 +38,7 @@ public class Main {
                     int noOfInpts = scan.nextInt();
                     int origin = scan.nextInt();
                     int bounds = scan.nextInt();
-                    randomInputs(noOfInpts,origin,bounds);
+                    //randomInputs(noOfInpts,origin,bounds);
                     break;
                 case "file":
                     readFromFile();
@@ -52,7 +52,7 @@ public class Main {
             File myObj = new File(name);
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
-                int data = Integer.parseInt(myReader.nextLine());
+                Long data = Long.valueOf(Integer.parseInt(myReader.nextLine()));
                 resource.put(data);
             }
             myReader.close();
@@ -64,13 +64,13 @@ public class Main {
 
     public static void inputs(){
         String op;
-        Integer tmp;
+        Long tmp;
         while(true){
             op = scan.nextLine();
             if(op.equals("q"))
                 break;
             try {
-                tmp = Integer.parseInt(op);
+                tmp = Long.valueOf(Integer.parseInt(op));
             }catch (NumberFormatException ex){
                 continue;
             }
@@ -91,6 +91,7 @@ public class Main {
         }
         resource.printMe();
         outcome.printMe();
+        outcome.printToFile();
         return 0;
     }
     
@@ -99,13 +100,6 @@ public class Main {
             Thread thread = new Thread(new Worker(resource,outcome));
             thread.start();
             workers.add(thread);
-        }
-    }
-
-    public static void randomInputs(int numberOfInputs, int origin, int bound){
-        Random rand = new Random();
-        for(int i = 0; i<numberOfInputs;i++){
-            resource.put(rand.nextInt(origin, bound));
         }
     }
 }

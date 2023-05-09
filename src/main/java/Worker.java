@@ -10,36 +10,20 @@ public class Worker implements Runnable{
         this.outcome = outcome;
     }
 
-    public static boolean isPrime(int number) throws InterruptedException {
-        // Liczby mniejsze lub równe 1 nie są pierwsze
-        if (number <= 1) {
-            return false;
+    public static List<Long> getDzielniki(Long number) throws InterruptedException{
+        List<Long> dzielniki = new ArrayList<>();
+
+        if(number < 1){
+            dzielniki.add(0l);
+            return dzielniki;
         }
 
-        // Sprawdzanie dzielników
-        for (int i = 2; i <= number; i++) {
-            if (number % i == 0) {
-                return false;
-            }
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                throw new InterruptedException();
-//            }
-        }
-
-        // Jeśli nie znaleziono dzielników, to liczba jest pierwsza
-        return true;
-    }
-
-    public static List<Integer> getDzielniki(int number) throws InterruptedException{
-        List<Integer> dzielniki = new ArrayList<>();
-        for (int i = 1; i <= number; i++) {
+        for (Long i = 1l; i <= number; i++) {
             if (number % i == 0) {
                 dzielniki.add(i);
             }
             try {
-                Thread.sleep(100);
+                Thread.sleep(0);
             } catch (InterruptedException e) {
                 throw new InterruptedException();
             }
@@ -52,9 +36,9 @@ public class Worker implements Runnable{
     public void run(){
         long currentThreadId = Thread.currentThread().getId();
         System.out.println("Thread with ID has started: " + currentThreadId);
-        int value;
+        Long value;
         boolean isP;
-        List<Integer> dzielniki;
+        List<Long> dzielniki;
         while(true){
             try{
                 value = resource.take();
@@ -66,7 +50,7 @@ public class Worker implements Runnable{
                 dzielniki = getDzielniki(value);
                 //isP = isPrime(value);
             }catch (InterruptedException ex){
-                //System.out.println("pobralem i zwracam wartosc do listy: " + value);
+                System.out.println("pobralem i zwracam wartosc do listy: " + value);
                 resource.put(value);
                 break;
             }
