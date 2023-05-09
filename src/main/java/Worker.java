@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Worker implements Runnable{
-    private final Resource resource;
-    private final Outcome outcome;
+    private Resource resource;
+    private Outcome outcome;
     public boolean isWorking;
 
     public Worker(Resource resource, Outcome outcome){
@@ -12,26 +12,19 @@ public class Worker implements Runnable{
         isWorking = true;
     }
 
-    public List<Long> getDivisors(Long number) throws InterruptedException{
+    public List<Long> getDivisors(Long number){// throws InterruptedException{
         List<Long> divisors = new ArrayList<>();
 
         if(number < 1){
-            divisors.add(0L);
+            divisors.add(0l);
             return divisors;
         }
 
-        for (Long i = 1L; i <= number; i++) {
+        for (Long i = 1l; i <= number; i++) {
             if (number % i == 0) {
                 divisors.add(i);
             }
-            try {
-                Thread.sleep(1000*5);
-            } catch (InterruptedException e) {
-                isWorking = false;
-            }
         }
-
-
 
         return divisors;
     }
@@ -40,8 +33,8 @@ public class Worker implements Runnable{
     public void run(){
         long currentThreadId = Thread.currentThread().getId();
         System.out.println("Thread with ID has started: " + currentThreadId);
-        Long value = -1L;
-        List<Long> divisors = new ArrayList<>();
+        Long value = -1l;
+        List<Long> divisors;
 
         while(isWorking){
             try{
@@ -52,18 +45,10 @@ public class Worker implements Runnable{
             }
 
             if(value >= 0) {
-                try {
-                    divisors = getDivisors(value);
-                    if(!isWorking){
-                        throw new InterruptedException();
-                    }
-                }
-                catch (InterruptedException e){
-                    isWorking = false;
-                }
+                divisors = getDivisors(value);
                 outcome.put(value, divisors);
             }
-            value = -1L;
+            value = -1l;
         }
     }
 

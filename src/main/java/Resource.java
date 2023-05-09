@@ -4,7 +4,7 @@ public class Resource {
     private LinkedList<Long> Numbers;
 
     public Resource(){
-        this.Numbers = new LinkedList<Long>();
+        this.Numbers = new LinkedList<>();
     }
 
     public LinkedList<Long> getNumbers(){
@@ -12,14 +12,11 @@ public class Resource {
     }
 
     public synchronized Long take() throws InterruptedException{
-        long currentThreadId = Thread.currentThread().getId();
         while(Numbers.isEmpty()){
-            System.out.println(currentThreadId + ": lista jest pusta, czekam na inputy");
             wait();
         }
         Long retVal = Numbers.getLast();
         Numbers.removeLast();
-        System.out.println(currentThreadId + ": pobralem: "+ retVal);
         return retVal;
     }
 
