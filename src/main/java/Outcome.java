@@ -31,19 +31,18 @@ public class Outcome {
     }
 
     public void printToFile(){
-        //TODO - fix the printer function so that it appends to file.
         try {
             FileWriter myWriter = new FileWriter("divisors.txt", true);
 
             for (Out o: this.outcomes
                  ) {
-                myWriter.write("Number: "+ o.liczba + " can be divided by: " + o.dzielniki + "\n");
+                myWriter.write("Number: "+ o.liczba + (o.liczba == 0 ? " has no divisors" : " can be divided by: " + o.dzielniki) + "\n");
             }
 
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred while writing to file.");
             e.printStackTrace();
         }
     }
